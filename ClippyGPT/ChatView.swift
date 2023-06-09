@@ -9,12 +9,27 @@ import SwiftUI
 
 struct ChatView: View {
     @ObservedObject var viewModel = ViewModel()
-
+        
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+    
     var body: some View {
         VStack {
             ScrollViewReader { scrollView in
                 ScrollView(.vertical) { // User must scroll off the top to enable programmatic scrolling
                     VStack {            // Simplifies scrollTo using id "VStackInScrollView"
+                        HStack {
+                            Picker("Stream new answers", selection: $viewModel.streamResponse) {
+                                Text("Streaming enabled").tag(true)
+                                Text("Wait for response").tag(false)
+                            }
+                            .pickerStyle(.segmented)
+                            Button {
+                                print("user tapped")
+                                UserDefaults.standard.set(!isDarkMode, forKey: "isDarkMode")
+                            } label: {
+                                Image(systemName: "moon")
+                            }
+                        }
                         ForEach(viewModel.messages.filter({$0.role != .system}),
                                 id: \.id)
                         { message in
@@ -43,7 +58,6 @@ struct ChatView: View {
                     Text("Send")
                 }
             }
-            Toggle("Streaming", isOn: $viewModel.streamResponse)
         }
         .padding()
     }

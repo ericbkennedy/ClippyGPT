@@ -8,6 +8,7 @@
 import Foundation
 
 class OpenAIService {
+    var modelVersion = "gpt-3.5-turbo"
     private let endpointURL = "https://api.openai.com/v1/chat/completions"
     
     /// messages is history of all messages in this chat including id and createdAt
@@ -18,7 +19,7 @@ class OpenAIService {
         // filter out id and createdAt properties before sending to openAI
         let openAIMessages = messages.map({OpenAIChatMessage(role: $0.role, content: $0.content)})
         
-        let body = OpenAIChatBody(model: "gpt-3.5-turbo", messages: openAIMessages, stream: false)
+        let body = OpenAIChatBody(model: modelVersion, messages: openAIMessages, stream: false)
 
         do {
             var request = URLRequest(url: url)
@@ -53,7 +54,7 @@ class OpenAIService {
         // filter out id and createdAt properties before sending to openAI
         let openAIMessages = messages.map({OpenAIChatMessage(role: $0.role, content: $0.content)})
         
-        let body = OpenAIChatBody(model: "gpt-3.5-turbo", messages: openAIMessages, stream: true)
+        let body = OpenAIChatBody(model: modelVersion, messages: openAIMessages, stream: true)
         
         do {
             var request = URLRequest(url: url)

@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct ClippyGPTApp: App {
+
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+
     var body: some Scene {
         WindowGroup {
             ChatView()
+                .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
 }
